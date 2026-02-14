@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Systems Insight™</title>
+
+<style>
+:root {
+  --primary: #0f172a;
+  --accent: #2563eb;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  color: var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 95%;
+  max-width: 600px;
+  background: var(--card);
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  transition: all 0.4s ease;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 14px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.option {
+  background: #e2e8f0;
+  color: var(--primary);
+}
+
+.progress-bar {
+  height: 6px;
+  width: 100%;
+  background: #e2e8f0;
+  border-radius: 10px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+.glitch {
+  animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0px); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-1px, -2px); }
+  100% { transform: translate(0px); }
+}
+
+.analysis-screen {
+  text-align: center;
+}
+
+.analysis-text {
+  font-size: 1rem;
+  margin-top: 20px;
+  min-height: 40px;
+}
+
+.result-title {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.fade-in {
+  animation: fadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.footer-note {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+
+<h1>Family Systems Insight™</h1>
+<div class="subtitle">Advanced AI-Driven Relational Pattern Analysis</div>
+
+<div id="content"></div>
+
+</div>
+
+<script>
+
+const questions = [
+  { q: "When conflict arises, what usually happens?",
+    options: ["Direct conversation", "Passive tension", "Historical references from 2004", "Nobody remembers starting it"] },
+
+  { q: "How are boundaries treated?",
+    options: ["Respected", "Negotiable", "Optional", "Interpreted creatively"] },
+
+  { q: "Family memory accuracy tends to be:",
+    options: ["Consistent", "Selective", "Strategic", "Weaponised"] },
+
+  { q: "Emotional regulation during disagreement:",
+    options: ["Calm", "Variable", "Escalatory", "Theatrical"] },
+
+  { q: "Holiday gatherings feel like:",
+    options: ["Supportive", "Tense", "Competitive", "A psychological experiment"] }
+];
+
+let current = 0;
+
+const content = document.getElementById("content");
+
+function start() {
+  content.innerHTML = `
+    <button onclick="nextQuestion()">Begin Assessment</button>
+  `;
+}
+
+function nextQuestion() {
+  if (current >= questions.length) {
+    runAnalysis();
+    return;
+  }
+
+  const progressPercent = ((current) / questions.length) * 100;
+
+  content.innerHTML = `
+    <div class="progress-bar"><div class="progress" style="width:${progressPercent}%"></div></div>
+    <h2>${questions[current].q}</h2>
+    ${questions[current].options.map(o => `<button class="option" onclick="selectOption()">${o}</button>`).join("")}
+  `;
+}
+
+function selectOption() {
+  current++;
+  nextQuestion();
+}
+
+function runAnalysis() {
+
+  content.innerHTML = `
+    <div class="analysis-screen">
+      <div class="progress-bar"><div class="progress" id="analysisProgress"></div></div>
+      <div class="analysis-text" id="analysisText"></div>
+    </div>
+  `;
+
+  const text = document.getElementById("analysisText");
+  const bar = document.getElementById("analysisProgress");
+
+  const messages = [
+    "Analysing relational data vectors...",
+    "Mapping intergenerational influence clusters...",
+    "Conflict density above projected threshold.",
+    "Warning: Emotional recursion loop detected.",
+    "Attempting to locate adult in system...",
+    "No adult found.",
+    "Re-scanning...",
+    "Re-evaluating life choices..."
+  ];
+
+  let i = 0;
+  let progress = 0;
+
+  const interval = setInterval(() => {
+    if (i < messages.length) {
+      text.textContent = messages[i];
+      progress += 12;
+      bar.style.width = progress + "%";
+
+      if (i > 3) {
+        text.classList.add("glitch");
+      }
+
+      i++;
+    } else {
+      clearInterval(interval);
+      setTimeout(showResult, 1500);
+    }
+  }, 1200);
+}
+
+function showResult() {
+
+  content.innerHTML = `
+    <div class="fade-in">
+      <div class="result-title">Family Systems Diagnostic Report</div>
+
+      <p>
+      After extensive cross-referencing of behavioural inputs,
+      historical grievances, communication irregularities,
+      and unresolved holiday incidents,
+      the system has reached a statistically confident conclusion.
+      </p>
+
+      <h2 style="margin-top:20px;">Primary destabilising variable:</h2>
+      <h1 style="margin-top:10px;">Entire Family Unit</h1>
+
+      <p style="margin-top:20px;">
+      Contributing factors include:
+      </p>
+
+      <ul>
+        <li>Generational emotional suppression</li>
+        <li>Competitive victimhood</li>
+        <li>Weaponised memory recall</li>
+        <li>Selectively applied accountability</li>
+        <li>Persistent "but what about when YOU..." syndrome</li>
+      </ul>
+
+      <p style="margin-top:20px;">
+      Recommendation:
+      </p>
+
+      <ul>
+        <li>Group therapy</li>
+        <li>Boundaries</li>
+        <li>Hydration</li>
+        <li>Possibly snacks</li>
+      </ul>
+
+      <div class="footer-note">
+      AI status: Emotionally overwhelmed but still processing.
+      </div>
+
+      <button onclick="restart()">Re-run Assessment</button>
+    </div>
+  `;
+}
+
+function restart() {
+  current = 0;
+  start();
+}
+
+start();
+
+</script>
+
+</body>
+</html>
