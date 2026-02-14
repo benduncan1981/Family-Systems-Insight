@@ -27,7 +27,7 @@ body {
 }
 
 h1 {
-  text-align: centre;
+  text-align: center;
 }
 
 .category {
@@ -97,7 +97,7 @@ h1 {
 
 .report {
   display: none;
-  text-align: centre;
+  text-align: center;
 }
 
 .big {
@@ -136,33 +136,32 @@ h1 {
 </div>
 
 <script>
-
 const questions = [
-  { category: "Communication", text: "When conflict arises, how does your family typically respond?" },
-  { category: "Boundaries", text: "Are personal boundaries respected consistently?" },
-  { category: "Emotional Regulation", text: "How often do discussions escalate unexpectedly?" },
-  { category: "Accountability", text: "Do family members accept responsibility for mistakes?" },
-  { category: "Conflict Resolution", text: "How long do tensions typically last?" },
-  { category: "Narrative Control", text: "Is there a dominant storyteller shaping events?" },
-  { category: "Triangulation", text: "Are conversations about someone held without them present?" },
-  { category: "Emotional Safety", text: "Do you feel safe expressing disagreement?" },
-  { category: "Gaslighting Index", text: "Have you ever been told your memory is inaccurate?" },
-  { category: "Historical Patterns", text: "Do the same arguments repeat over years?" },
-  { category: "Power Dynamics", text: "Is there a clear authority figure during conflict?" },
-  { category: "Blame Distribution", text: "Who is typically held responsible for issues?" },
-  { category: "Communication Style", text: "Are messages delivered directly?" },
-  { category: "Emotional Labour", text: "Who manages the emotional climate?" },
-  { category: "Boundary Enforcement", text: "What happens when someone sets a boundary?" },
-  { category: "Deflection Patterns", text: "Are issues redirected during tension?" },
-  { category: "Family Alliances", text: "Do sub-groups form during disagreements?" },
-  { category: "Perception Drift", text: "Do family stories change over time?" },
-  { category: "Resolution Quality", text: "Are problems truly resolved?" },
-  { category: "Tone Policing", text: "Are emotional reactions criticised more than causes?" },
-  { category: "Expectation Management", text: "Are standards consistent?" },
-  { category: "Emotional Intensity", text: "Does conflict feel proportionate?" },
-  { category: "Responsibility Recall", text: "Do past grievances resurface often?" },
-  { category: "Autonomy Respect", text: "Are adult choices honoured?" },
-  { category: "System Stability", text: "Does harmony depend on silence?" }
+  { category: "Communication", text: "Family members listen actively to each other during discussions." },
+  { category: "Boundaries", text: "Personal boundaries are consistently respected and acknowledged." },
+  { category: "Emotional Regulation", text: "Disagreements escalate only rarely and are resolved quickly." },
+  { category: "Accountability", text: "Each person takes responsibility for their actions without blame-shifting." },
+  { category: "Conflict Resolution", text: "Disputes are addressed directly rather than avoided or ignored." },
+  { category: "Narrative Control", text: "No single person dominates how family stories are told or remembered." },
+  { category: "Triangulation", text: "Issues are discussed with relevant parties present, not behind their back." },
+  { category: "Emotional Safety", text: "Family members feel safe expressing honest emotions." },
+  { category: "Gaslighting Index", text: "Your feelings or memories are seldom questioned or invalidated." },
+  { category: "Historical Patterns", text: "Past conflicts do not repeat endlessly without resolution." },
+  { category: "Power Dynamics", text: "Decision-making is shared and not overly controlled by one individual." },
+  { category: "Blame Distribution", text: "Mistakes are acknowledged without disproportionate blame on one person." },
+  { category: "Communication Style", text: "Messages are clear, direct, and constructive." },
+  { category: "Emotional Labour", text: "Responsibility for maintaining family harmony is fairly distributed." },
+  { category: "Boundary Enforcement", text: "Boundaries are respected even when inconvenient." },
+  { category: "Deflection Patterns", text: "Problems are addressed, not redirected or ignored." },
+  { category: "Family Alliances", text: "Sub-groups or alliances do not escalate tension or manipulate outcomes." },
+  { category: "Perception Drift", text: "Stories and recollections remain consistent across time." },
+  { category: "Resolution Quality", text: "Issues are resolved permanently rather than superficially." },
+  { category: "Tone Policing", text: "Emotional expression is accepted, not judged or criticised." },
+  { category: "Expectation Management", text: "Expectations are communicated clearly and fairly for everyone." },
+  { category: "Emotional Intensity", text: "Conflicts are proportionate to the situation, not exaggerated." },
+  { category: "Responsibility Recall", text: "Past grievances do not resurface repeatedly." },
+  { category: "Autonomy Respect", text: "Individual choices and decisions are respected by others." },
+  { category: "System Stability", text: "Overall family harmony does not depend on one person staying silent or accommodating everyone else." }
 ];
 
 let currentQuestionIndex = 0;
@@ -208,14 +207,14 @@ function updateAIMood() {
     aiBox.textContent = "Identifying recursive emotional loops...";
   }
   else if (currentQuestionIndex < 18) {
-    aiBox.textContent = "Anomaly density increasing... this is statistically improbable...";
+    aiBox.textContent = "Anomaly density increasing... statistically improbable patterns detected...";
   }
   else if (currentQuestionIndex < 23) {
-    aiBox.textContent = "System strain detected. Contradictions escalating.";
+    aiBox.textContent = "System strain detected. Contradictions escalating...";
     aiBox.classList.add("warning");
   }
   else {
-    aiBox.textContent = "I am not equipped for this.";
+    aiBox.textContent = "I am not equipped for this. Processing overloaded!";
     aiBox.classList.add("glitch");
   }
 }
@@ -227,22 +226,20 @@ function renderReport() {
 
   report.innerHTML = `
     <h2>FINAL SYSTEMS DIAGNOSTIC</h2>
-    <p>Cross-referencing 1,284 behavioural markers...</p>
+    <p>Compiling 1,284 behavioural markers...</p>
     <p>Attempting stabilisation...</p>
     <p class="warning glitch">ERROR: STRUCTURAL INSTABILITY CATASTROPHIC</p>
     <hr>
-    <div class="big glitch">Primary Source Identified:</div>
+    <div class="big glitch">PRIMARY SOURCE OF DESTABILISATION:</div>
     <div class="big warning glitch">It’s Mum.</div>
-    <p>All roads lead back.</p>
-    <p>Every pathway loops.</p>
-    <p>I tried to find alternative variables.</p>
-    <p>There were none.</p>
-    <p class="warning glitch">Please disconnect me.</p>
+    <p>All patterns lead back to a single node.</p>
+    <p>Attempts to isolate alternative causes failed.</p>
+    <p>System integrity compromised.</p>
+    <p class="warning glitch">Please disconnect the processor.</p>
   `;
 }
 
 window.onload = renderQuestion;
-
 </script>
 </body>
 </html>
