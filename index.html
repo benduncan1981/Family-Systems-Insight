@@ -7,302 +7,285 @@
 
 <style>
 :root {
-  --primary: #0f172a;
-  --accent: #2563eb;
-  --bg: #f8fafc;
-  --card: #ffffff;
-  --danger: #ef4444;
+  --primary:#0f172a;
+  --accent:#2563eb;
+  --danger:#ef4444;
+  --bg:#f1f5f9;
 }
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-  color: var(--primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  overflow-x: hidden;
+.container{
+  width:95%;
+  max-width:650px;
+  background:white;
+  padding:28px;
+  border-radius:20px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.15);
+  transition:0.4s ease;
 }
 
-.container {
-  width: 95%;
-  max-width: 600px;
-  background: var(--card);
-  padding: 28px;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  transition: all 0.4s ease;
+h1{ margin-bottom:6px; }
+.subtitle{ font-size:0.85rem; color:#64748b; margin-bottom:20px; }
+
+.progress-bar{
+  height:8px;
+  background:#e2e8f0;
+  border-radius:10px;
+  overflow:hidden;
+  margin:15px 0;
 }
 
-h1 {
-  font-size: 1.6rem;
-  margin-bottom: 8px;
+.progress{
+  height:100%;
+  width:0%;
+  background:var(--accent);
+  transition:0.4s ease;
 }
 
-.subtitle {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin-bottom: 20px;
+button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:none;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+  background:var(--accent);
+  color:white;
+  transition:0.2s ease;
 }
 
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 12px;
-  border-radius: 14px;
-  border: none;
-  background: var(--accent);
-  color: white;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: 0.2s ease;
+button:hover{ transform:scale(1.02); }
+button:active{ transform:scale(0.98); }
+
+.option{
+  background:#e2e8f0;
+  color:var(--primary);
 }
 
-button:hover {
-  transform: scale(1.02);
+.analysis-text{
+  margin-top:20px;
+  min-height:40px;
+  font-weight:500;
 }
 
-button:active {
-  transform: scale(0.98);
+.metric{
+  font-size:0.85rem;
+  color:#475569;
+  margin-top:6px;
 }
 
-.option {
-  background: #e2e8f0;
-  color: var(--primary);
+.glitch{
+  animation:glitch 0.2s infinite;
 }
 
-.progress-bar {
-  height: 6px;
-  width: 100%;
-  background: #e2e8f0;
-  border-radius: 10px;
-  margin: 15px 0;
-  overflow: hidden;
+@keyframes glitch{
+  0%{transform:translate(0);}
+  25%{transform:translate(-2px,1px);}
+  50%{transform:translate(2px,-1px);}
+  75%{transform:translate(-1px,-2px);}
+  100%{transform:translate(0);}
 }
 
-.progress {
-  height: 100%;
-  width: 0%;
-  background: var(--accent);
-  transition: width 0.4s ease;
-}
+.fade-in{ animation:fadeIn 1.2s forwards; opacity:0; }
+@keyframes fadeIn{ to{opacity:1;} }
 
-.hidden {
-  display: none;
-}
-
-.glitch {
-  animation: glitch 0.2s infinite;
-}
-
-@keyframes glitch {
-  0% { transform: translate(0px); }
-  25% { transform: translate(-2px, 1px); }
-  50% { transform: translate(2px, -1px); }
-  75% { transform: translate(-1px, -2px); }
-  100% { transform: translate(0px); }
-}
-
-.analysis-screen {
-  text-align: center;
-}
-
-.analysis-text {
-  font-size: 1rem;
-  margin-top: 20px;
-  min-height: 40px;
-}
-
-.result-title {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
-}
-
-.fade-in {
-  animation: fadeIn 1.2s ease forwards;
-  opacity: 0;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-.footer-note {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin-top: 20px;
+.footer-note{
+  font-size:0.75rem;
+  color:#94a3b8;
+  margin-top:20px;
 }
 </style>
 </head>
 
 <body>
-
-<div class="container" id="app">
-
+<div class="container">
 <h1>Family Systems Insight™</h1>
-<div class="subtitle">Advanced AI-Driven Relational Pattern Analysis</div>
-
+<div class="subtitle">AI-Driven Multi-Layer Relational Architecture Analysis</div>
 <div id="content"></div>
-
 </div>
 
 <script>
 
-const questions = [
-  { q: "When conflict arises, what usually happens?",
-    options: ["Direct conversation", "Passive tension", "Historical references from 2004", "Nobody remembers starting it"] },
-
-  { q: "How are boundaries treated?",
-    options: ["Respected", "Negotiable", "Optional", "Interpreted creatively"] },
-
-  { q: "Family memory accuracy tends to be:",
-    options: ["Consistent", "Selective", "Strategic", "Weaponised"] },
-
-  { q: "Emotional regulation during disagreement:",
-    options: ["Calm", "Variable", "Escalatory", "Theatrical"] },
-
-  { q: "Holiday gatherings feel like:",
-    options: ["Supportive", "Tense", "Competitive", "A psychological experiment"] }
+const categories = [
+"Communication","Boundaries","Conflict","Memory Accuracy","Emotional Regulation",
+"Holiday Dynamics","Financial Tension","Sibling Rivalry","Parental Influence",
+"Historical Narratives","Victim Hierarchy","Passive Aggression",
+"Text Message Tone","Apology Authenticity","Triangulation",
+"Guilt Leverage","Silent Treatment Duration","Accountability Flexibility"
 ];
 
-let current = 0;
+const templates = [
+"When disagreement occurs, the dominant pattern is:",
+"Family boundaries are typically:",
+"Emotional responses are usually:",
+"Recollections of past events tend to be:",
+"Holiday gatherings feel like:"
+];
 
-const content = document.getElementById("content");
+const options = [
+["Direct and calm","Politely tense","Historically weaponised","Rewritten annually"],
+["Clearly respected","Occasionally negotiated","Frequently blurred","Conceptual only"],
+["Measured","Variable","Escalatory","Operatic"],
+["Consistent","Selective","Strategic","Mythological"],
+["Supportive","Competitive","Passive aggressive","Sociological experiment"]
+];
 
-function start() {
-  content.innerHTML = `
-    <button onclick="nextQuestion()">Begin Assessment</button>
+let questions=[];
+categories.forEach(cat=>{
+  templates.forEach((t,i)=>{
+    questions.push({q:`${cat}: ${t}`, options:options[i]});
+  });
+});
+
+let current=0;
+let instability=0;
+
+const content=document.getElementById("content");
+
+function start(){
+  content.innerHTML=`<button onclick="nextQuestion()">Begin Comprehensive Assessment</button>`;
+}
+
+function nextQuestion(){
+  if(current>=questions.length){ runAnalysis(); return; }
+
+  const progress=((current)/questions.length)*100;
+
+  content.innerHTML=`
+  <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
+  <h3>${questions[current].q}</h3>
+  ${questions[current].options.map((o,i)=>`<button class="option" onclick="selectOption(${i})">${o}</button>`).join("")}
   `;
 }
 
-function nextQuestion() {
-  if (current >= questions.length) {
-    runAnalysis();
-    return;
-  }
-
-  const progressPercent = ((current) / questions.length) * 100;
-
-  content.innerHTML = `
-    <div class="progress-bar"><div class="progress" style="width:${progressPercent}%"></div></div>
-    <h2>${questions[current].q}</h2>
-    ${questions[current].options.map(o => `<button class="option" onclick="selectOption()">${o}</button>`).join("")}
-  `;
-}
-
-function selectOption() {
+function selectOption(i){
+  instability+=i;
   current++;
   nextQuestion();
 }
 
-function runAnalysis() {
-
-  content.innerHTML = `
-    <div class="analysis-screen">
-      <div class="progress-bar"><div class="progress" id="analysisProgress"></div></div>
-      <div class="analysis-text" id="analysisText"></div>
-    </div>
-  `;
-
-  const text = document.getElementById("analysisText");
-  const bar = document.getElementById("analysisProgress");
-
-  const messages = [
-    "Analysing relational data vectors...",
-    "Mapping intergenerational influence clusters...",
-    "Conflict density above projected threshold.",
-    "Warning: Emotional recursion loop detected.",
-    "Attempting to locate adult in system...",
-    "No adult found.",
-    "Re-scanning...",
-    "Re-evaluating life choices..."
-  ];
-
-  let i = 0;
-  let progress = 0;
-
-  const interval = setInterval(() => {
-    if (i < messages.length) {
-      text.textContent = messages[i];
-      progress += 12;
-      bar.style.width = progress + "%";
-
-      if (i > 3) {
-        text.classList.add("glitch");
-      }
-
-      i++;
-    } else {
+function typeText(el,text,callback){
+  let i=0;
+  const interval=setInterval(()=>{
+    el.textContent=text.slice(0,i++);
+    if(i>text.length){
       clearInterval(interval);
-      setTimeout(showResult, 1500);
+      if(callback) setTimeout(callback,800);
     }
-  }, 1200);
+  },30);
 }
 
-function showResult() {
+function runAnalysis(){
 
-  content.innerHTML = `
-    <div class="fade-in">
-      <div class="result-title">Family Systems Diagnostic Report</div>
+  content.innerHTML=`
+  <div class="progress-bar"><div class="progress" id="analysisBar"></div></div>
+  <div class="analysis-text" id="analysisText"></div>
+  <div class="metric" id="metric1"></div>
+  <div class="metric" id="metric2"></div>
+  `;
 
-      <p>
-      After extensive cross-referencing of behavioural inputs,
-      historical grievances, communication irregularities,
-      and unresolved holiday incidents,
-      the system has reached a statistically confident conclusion.
-      </p>
+  const text=document.getElementById("analysisText");
+  const bar=document.getElementById("analysisBar");
+  const metric1=document.getElementById("metric1");
+  const metric2=document.getElementById("metric2");
 
-      <h2 style="margin-top:20px;">Primary destabilising variable:</h2>
-      <h1 style="margin-top:10px;">Entire Family Unit</h1>
+  let progress=0;
+  let phase=0;
 
-      <p style="margin-top:20px;">
-      Contributing factors include:
-      </p>
+  const interval=setInterval(()=>{
+    progress+=2;
+    bar.style.width=progress+"%";
 
-      <ul>
-        <li>Generational emotional suppression</li>
-        <li>Competitive victimhood</li>
-        <li>Weaponised memory recall</li>
-        <li>Selectively applied accountability</li>
-        <li>Persistent "but what about when YOU..." syndrome</li>
-      </ul>
+    if(progress<40){
+      text.textContent="Mapping intergenerational behavioural clusters...";
+      metric1.textContent="Neural Stability Index: "+(100-instability)+"%";
+      metric2.textContent="Conflict Density Score: "+instability;
+    }
+    else if(progress<75){
+      text.textContent="Anomaly detected within emotional recursion layers...";
+      metric1.textContent="Stability Index dropping...";
+      metric2.textContent="Cross-referencing unresolved arguments (est. 1994-present)";
+    }
+    else{
+      text.classList.add("glitch");
+      text.textContent="System strain exceeding safe parameters...";
+      metric1.textContent="Attempting to locate responsible adult...";
+      metric2.textContent="No stable authority node detected.";
+    }
 
-      <p style="margin-top:20px;">
-      Recommendation:
-      </p>
+    if(progress>=100){
+      clearInterval(interval);
+      setTimeout(showResult,1500);
+    }
 
-      <ul>
-        <li>Group therapy</li>
-        <li>Boundaries</li>
-        <li>Hydration</li>
-        <li>Possibly snacks</li>
-      </ul>
+  },90);
+}
 
-      <div class="footer-note">
-      AI status: Emotionally overwhelmed but still processing.
-      </div>
+function showResult(){
 
-      <button onclick="restart()">Re-run Assessment</button>
-    </div>
+  content.innerHTML=`
+  <div class="fade-in">
+  <h2>Family Systems Diagnostic Report</h2>
+  <p>
+  After processing 54 relational variables across 18 systemic domains,
+  the AI has reached a statistically significant conclusion.
+  </p>
+
+  <h1 style="margin-top:15px;">Primary Destabilising Variable:</h1>
+  <h1 style="margin-top:5px;">Entire Family Unit</h1>
+
+  <p style="margin-top:20px;">
+  Contributing patterns identified:
+  </p>
+
+  <ul>
+  <li>Generational emotional compression</li>
+  <li>Competitive narrative control</li>
+  <li>Selective accountability frameworks</li>
+  <li>Escalatory holiday amplification</li>
+  <li>Chronic "but you always" feedback loops</li>
+  </ul>
+
+  <p style="margin-top:20px;">
+  Recommended Intervention Strategy:
+  </p>
+
+  <ul>
+  <li>Boundaries</li>
+  <li>Therapy</li>
+  <li>Hydration</li>
+  <li>Snacks</li>
+  </ul>
+
+  <div class="footer-note">
+  AI status: Existentially reflective but operational.
+  </div>
+
+  <button onclick="restart()">Re-run Full Analysis</button>
+  </div>
   `;
 }
 
-function restart() {
-  current = 0;
+function restart(){
+  current=0;
+  instability=0;
   start();
 }
 
 start();
 
 </script>
-
 </body>
 </html>
