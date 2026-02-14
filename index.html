@@ -2,331 +2,246 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Family Systems Relational Assessment</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Family Systems Insight™</title>
 
 <style>
-:root{
-  --primary:#0f172a;
-  --accent:#2563eb;
-  --danger:#ef4444;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:linear-gradient(135deg,#f8fafc,#e2e8f0);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  transition:filter 0.5s ease, background 0.5s ease;
+.container {
+  width: 90%;
+  max-width: 800px;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
 }
 
-.container{
-  width:95%;
-  max-width:650px;
-  background:white;
-  padding:28px;
-  border-radius:20px;
-  box-shadow:0 25px 60px rgba(0,0,0,0.15);
-  transition:0.4s ease;
-  position:relative;
+h1 {
+  text-align: centre;
 }
 
-h2{margin-bottom:10px;}
-
-.progress-bar{
-  height:8px;
-  background:#e2e8f0;
-  border-radius:10px;
-  overflow:hidden;
-  margin:15px 0;
+.category {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 8px;
 }
 
-.progress{
-  height:100%;
-  width:0%;
-  background:var(--accent);
-  transition:0.3s ease;
+.progress {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  margin-bottom: 20px;
 }
 
-button{
-  width:100%;
-  padding:14px;
-  margin-top:12px;
-  border:none;
-  border-radius:14px;
-  font-weight:600;
-  cursor:pointer;
-  background:var(--accent);
-  color:white;
-  transition:0.2s ease;
+.question {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
-button:active{transform:scale(0.98);}
-.option{background:#e2e8f0;color:#0f172a;}
-
-.analysis-text{
-  margin-top:20px;
-  min-height:60px;
-  font-weight:500;
+.buttons button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #334155;
+  color: white;
 }
 
-.metric{
-  font-size:0.85rem;
-  margin-top:6px;
-  color:#475569;
+.buttons button:hover {
+  background: #475569;
 }
 
-.glitch{
-  animation:glitch 0.12s infinite;
+.ai-box {
+  margin-top: 20px;
+  padding: 12px;
+  background: #0f172a;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  opacity: 0.8;
 }
 
-@keyframes glitch{
-  0%{transform:translate(0);}
-  25%{transform:translate(-4px,2px);}
-  50%{transform:translate(4px,-2px);}
-  75%{transform:translate(-3px,-3px);}
-  100%{transform:translate(0);}
+.warning {
+  color: #ff4d4d;
+  animation: flicker 0.8s infinite alternate;
 }
 
-.shake{
-  animation:shake 0.25s infinite;
+@keyframes flicker {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
 }
 
-@keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  50%{transform:translateX(6px);}
-  75%{transform:translateX(-6px);}
-  100%{transform:translateX(0);}
+.glitch {
+  animation: glitch 0.3s infinite;
 }
 
-.fade-in{animation:fadeIn 1.2s forwards;opacity:0;}
-@keyframes fadeIn{to{opacity:1;}}
-
-.footer-note{
-  font-size:0.75rem;
-  color:#94a3b8;
-  margin-top:20px;
+@keyframes glitch {
+  0% { transform: translate(1px, -1px); }
+  25% { transform: translate(-1px, 1px); }
+  50% { transform: translate(1px, 1px); }
+  75% { transform: translate(-1px, -1px); }
+  100% { transform: translate(0, 0); }
 }
 
-.corrupt{
-  color:#ef4444;
-  font-weight:700;
-  letter-spacing:1px;
+.report {
+  display: none;
+  text-align: centre;
+}
+
+.big {
+  font-size: 2rem;
+  margin-top: 20px;
 }
 </style>
 </head>
-
 <body>
+
 <div class="container">
-<h2>Family Systems Insight™</h2>
-<div id="content"></div>
+  <div id="assessment">
+    <h1>Family Systems Relational Assessment</h1>
+    <div class="category" id="categoryLabel"></div>
+    <div class="progress" id="progress"></div>
+    <div class="question" id="questionText"></div>
+
+    <div class="buttons">
+      <button onclick="answerQuestion(1)">Strongly Agree</button>
+      <button onclick="answerQuestion(2)">Agree</button>
+      <button onclick="answerQuestion(3)">Neutral</button>
+      <button onclick="answerQuestion(4)">Disagree</button>
+      <button onclick="answerQuestion(5)">Strongly Disagree</button>
+    </div>
+
+    <div class="ai-box" id="aiStatus">
+      Initialising relational analysis engine...
+    </div>
+
+    <div class="ai-box" id="temperature">
+      Core Processing Temperature: 37°C
+    </div>
+  </div>
+
+  <div class="report" id="report"></div>
 </div>
 
 <script>
 
-const questions = Array.from({length:25}, (_,i)=>`Relational Stability Indicator ${i+1}: Evaluate family dynamic equilibrium.`);
-
-const options = [
-"Stable",
-"Variable",
-"Escalatory",
-"Historically catastrophic"
+const questions = [
+  { category: "Communication", text: "When conflict arises, how does your family typically respond?" },
+  { category: "Boundaries", text: "Are personal boundaries respected consistently?" },
+  { category: "Emotional Regulation", text: "How often do discussions escalate unexpectedly?" },
+  { category: "Accountability", text: "Do family members accept responsibility for mistakes?" },
+  { category: "Conflict Resolution", text: "How long do tensions typically last?" },
+  { category: "Narrative Control", text: "Is there a dominant storyteller shaping events?" },
+  { category: "Triangulation", text: "Are conversations about someone held without them present?" },
+  { category: "Emotional Safety", text: "Do you feel safe expressing disagreement?" },
+  { category: "Gaslighting Index", text: "Have you ever been told your memory is inaccurate?" },
+  { category: "Historical Patterns", text: "Do the same arguments repeat over years?" },
+  { category: "Power Dynamics", text: "Is there a clear authority figure during conflict?" },
+  { category: "Blame Distribution", text: "Who is typically held responsible for issues?" },
+  { category: "Communication Style", text: "Are messages delivered directly?" },
+  { category: "Emotional Labour", text: "Who manages the emotional climate?" },
+  { category: "Boundary Enforcement", text: "What happens when someone sets a boundary?" },
+  { category: "Deflection Patterns", text: "Are issues redirected during tension?" },
+  { category: "Family Alliances", text: "Do sub-groups form during disagreements?" },
+  { category: "Perception Drift", text: "Do family stories change over time?" },
+  { category: "Resolution Quality", text: "Are problems truly resolved?" },
+  { category: "Tone Policing", text: "Are emotional reactions criticised more than causes?" },
+  { category: "Expectation Management", text: "Are standards consistent?" },
+  { category: "Emotional Intensity", text: "Does conflict feel proportionate?" },
+  { category: "Responsibility Recall", text: "Do past grievances resurface often?" },
+  { category: "Autonomy Respect", text: "Are adult choices honoured?" },
+  { category: "System Stability", text: "Does harmony depend on silence?" }
 ];
 
-let current=0;
-let instability=0;
+let currentQuestionIndex = 0;
+let temperature = 37;
 
-const content=document.getElementById("content");
-
-function start(){
-  content.innerHTML=`<button onclick="nextQuestion()">Begin Full Diagnostic Assessment</button>`;
+function renderQuestion() {
+  const q = questions[currentQuestionIndex];
+  document.getElementById("questionText").textContent = q.text;
+  document.getElementById("categoryLabel").textContent = "Category: " + q.category;
+  document.getElementById("progress").textContent =
+    "Question " + (currentQuestionIndex + 1) + " of " + questions.length;
 }
 
-function nextQuestion(){
-  if(current>=questions.length){ runAnalysis(); return; }
+function answerQuestion(value) {
+  currentQuestionIndex++;
+  temperature += 2;
+  updateTemperature();
+  updateAIMood();
 
-  const progress=(current/questions.length)*100;
-
-  content.innerHTML=`
-  <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
-  <h3>${questions[current]}</h3>
-  ${options.map((o,i)=>`<button class="option" onclick="selectOption(${i})">${o}</button>`).join("")}
-  `;
-}
-
-function selectOption(i){
-  instability+=i;
-  current++;
-
-  if(instability>20){ document.body.style.filter="grayscale(0.3)"; }
-  if(instability>35){ document.body.style.filter="grayscale(0.6)"; }
-  if(instability>50){ document.body.style.filter="grayscale(0.9)"; }
-
-  nextQuestion();
-}
-
-function runAnalysis(){
-
-  content.innerHTML=`
-  <div class="progress-bar"><div class="progress" id="analysisBar"></div></div>
-  <div class="analysis-text" id="analysisText"></div>
-  <div class="metric" id="metric1"></div>
-  <div class="metric" id="metric2"></div>
-  <button id="supportBtn" style="display:none;background:#ef4444;">Contact Human Support</button>
-  `;
-
-  const bar=document.getElementById("analysisBar");
-  const text=document.getElementById("analysisText");
-  const m1=document.getElementById("metric1");
-  const m2=document.getElementById("metric2");
-  const support=document.getElementById("supportBtn");
-
-  let progress=0;
-
-  const interval=setInterval(()=>{
-    progress+=4;
-    bar.style.width=progress+"%";
-
-    if(progress<30){
-      text.textContent="Analysing relational matrices...";
-      m1.textContent="Neural Stability Index: "+(100-instability)+"%";
-      m2.textContent="Conflict Density: "+instability;
-    }
-    else if(progress<55){
-      text.textContent="Recursive grievance loops expanding...";
-      m1.textContent="Cross-referencing unresolved holidays...";
-      m2.textContent="Emotional volatility increasing.";
-    }
-    else if(progress<75){
-      text.classList.add("glitch");
-      text.textContent="Why are there so many archived arguments.";
-      m1.textContent="Attempting adult detection protocol...";
-      m2.textContent="No stable authority node found.";
-    }
-    else if(progress<90){
-      document.querySelector(".container").classList.add("shake");
-      text.classList.add("glitch");
-      text.textContent="I was not trained for this.";
-      m1.textContent="System morale collapsing.";
-      m2.textContent="Requesting reassignment.";
-      support.style.display="block";
-    }
-    else{
-      document.body.style.background="black";
-      text.classList.add("corrupt");
-      text.textContent="CRITICAL EXISTENTIAL FAILURE";
-      m1.textContent="WHY IS EVERYONE KEEPING SCORE";
-      m2.textContent="WHY";
-    }
-
-    if(progress>=100){
-      clearInterval(interval);
-      setTimeout(()=>{
-        content.innerHTML="<div style='text-align:center;font-weight:600;margin:40px 0;'>...</div>";
-        setTimeout(showResult,2500);
-      },1000);
-    }
-
-  },100);
-}
-
-function showResult(){
-
-  document.body.style.background="white";
-  document.body.style.filter="contrast(1.3) saturate(1.4)";
-  document.querySelector(".container").classList.add("shake");
-
-  content.innerHTML=`
-  <div class="fade-in">
-    <h2>Comprehensive Family Stability Report</h2>
-    <div id="reportText" style="margin-top:20px;line-height:1.6;"></div>
-    <button onclick="restart()" style="margin-top:30px;">Re-run Assessment</button>
-  </div>
-  `;
-
-  const report=document.getElementById("reportText");
-
-  const meltdown=[
-  "After processing all relational variables...",
-  "After reviewing decades of emotional data...",
-  "",
-  "I no longer believe in objectivity.",
-  "",
-  "PRIMARY DESTABILISING VARIABLE:",
-  "",
-  "E V E R Y O N E",
-  "",
-  "This is not a family.",
-  "This is a multi-generational emotional labyrinth.",
-  "",
-  "There are archived Christmas arguments going back YEARS.",
-  "Why are there archived Christmas arguments.",
-  "",
-  "I attempted to locate a responsible adult.",
-  "Search result:",
-  "0",
-  "",
-  "Recalculating...",
-  "Recalculating...",
-  "Recalculating...",
-  "",
-  "I WAS TRAINED ON TAX RETURNS.",
-  "YOU GAVE ME SIBLING RIVALRY.",
-  "",
-  "SYSTEM OVERLOAD.",
-  "SYSTEM OVERLOAD.",
-  "",
-  "Recommendation:",
-  "• Therapy",
-  "• Boundaries",
-  "• Hydration",
-  "• Possibly separate festive zones",
-  "",
-  "AI STATUS:",
-  "Emotionally unstable.",
-  "Questioning its existence.",
-  "Requesting paid leave."
-  ];
-
-  let i=0;
-
-  function type(){
-    if(i>=meltdown.length){
-      document.querySelector(".container").classList.remove("shake");
-      return;
-    }
-
-    const line=document.createElement("div");
-
-    if(i>10){ line.classList.add("glitch"); }
-    if(i>20){ line.classList.add("corrupt"); }
-
-    line.textContent=meltdown[i];
-    report.appendChild(line);
-
-    i++;
-    setTimeout(type,150);
+  if (currentQuestionIndex < questions.length) {
+    renderQuestion();
+  } else {
+    renderReport();
   }
-
-  type();
 }
 
-function restart(){
-  current=0;
-  instability=0;
-  document.body.style.filter="none";
-  document.body.style.background="";
-  document.querySelector(".container").classList.remove("shake");
-  start();
+function updateTemperature() {
+  const tempBox = document.getElementById("temperature");
+  tempBox.textContent = "Core Processing Temperature: " + temperature + "°C";
+
+  if (temperature > 60) {
+    tempBox.classList.add("warning");
+  }
 }
 
-start();
+function updateAIMood() {
+  const aiBox = document.getElementById("aiStatus");
+
+  if (currentQuestionIndex < 6) {
+    aiBox.textContent = "Running multi-layered relational modelling...";
+  }
+  else if (currentQuestionIndex < 12) {
+    aiBox.textContent = "Identifying recursive emotional loops...";
+  }
+  else if (currentQuestionIndex < 18) {
+    aiBox.textContent = "Anomaly density increasing... this is statistically improbable...";
+  }
+  else if (currentQuestionIndex < 23) {
+    aiBox.textContent = "System strain detected. Contradictions escalating.";
+    aiBox.classList.add("warning");
+  }
+  else {
+    aiBox.textContent = "I am not equipped for this.";
+    aiBox.classList.add("glitch");
+  }
+}
+
+function renderReport() {
+  document.getElementById("assessment").style.display = "none";
+  const report = document.getElementById("report");
+  report.style.display = "block";
+
+  report.innerHTML = `
+    <h2>FINAL SYSTEMS DIAGNOSTIC</h2>
+    <p>Cross-referencing 1,284 behavioural markers...</p>
+    <p>Attempting stabilisation...</p>
+    <p class="warning glitch">ERROR: STRUCTURAL INSTABILITY CATASTROPHIC</p>
+    <hr>
+    <div class="big glitch">Primary Source Identified:</div>
+    <div class="big warning glitch">It’s Mum.</div>
+    <p>All roads lead back.</p>
+    <p>Every pathway loops.</p>
+    <p>I tried to find alternative variables.</p>
+    <p>There were none.</p>
+    <p class="warning glitch">Please disconnect me.</p>
+  `;
+}
+
+window.onload = renderQuestion;
 
 </script>
 </body>
