@@ -10,7 +10,6 @@
   --primary:#0f172a;
   --accent:#2563eb;
   --danger:#ef4444;
-  --bg:#f1f5f9;
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -23,6 +22,7 @@ body{
   justify-content:center;
   align-items:center;
   min-height:100vh;
+  transition:filter 0.5s ease, background 0.5s ease;
 }
 
 .container{
@@ -33,10 +33,10 @@ body{
   border-radius:20px;
   box-shadow:0 25px 60px rgba(0,0,0,0.15);
   transition:0.4s ease;
+  position:relative;
 }
 
-h1{margin-bottom:6px;}
-.subtitle{font-size:0.85rem;color:#64748b;margin-bottom:20px;}
+h2{margin-bottom:10px;}
 
 .progress-bar{
   height:8px;
@@ -66,12 +66,13 @@ button{
   transition:0.2s ease;
 }
 
-button:hover{transform:scale(1.02);}
 button:active{transform:scale(0.98);}
+.option{background:#e2e8f0;color:#0f172a;}
 
-.option{
-  background:#e2e8f0;
-  color:var(--primary);
+.analysis-text{
+  margin-top:20px;
+  min-height:60px;
+  font-weight:500;
 }
 
 .metric{
@@ -80,22 +81,28 @@ button:active{transform:scale(0.98);}
   color:#475569;
 }
 
-.analysis-text{
-  margin-top:20px;
-  min-height:50px;
-  font-weight:500;
-}
-
 .glitch{
-  animation:glitch 0.2s infinite;
+  animation:glitch 0.12s infinite;
 }
 
 @keyframes glitch{
   0%{transform:translate(0);}
-  25%{transform:translate(-2px,1px);}
-  50%{transform:translate(2px,-1px);}
-  75%{transform:translate(-1px,-2px);}
+  25%{transform:translate(-4px,2px);}
+  50%{transform:translate(4px,-2px);}
+  75%{transform:translate(-3px,-3px);}
   100%{transform:translate(0);}
+}
+
+.shake{
+  animation:shake 0.25s infinite;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-6px);}
+  50%{transform:translateX(6px);}
+  75%{transform:translateX(-6px);}
+  100%{transform:translateX(0);}
 }
 
 .fade-in{animation:fadeIn 1.2s forwards;opacity:0;}
@@ -106,192 +113,216 @@ button:active{transform:scale(0.98);}
   color:#94a3b8;
   margin-top:20px;
 }
+
+.corrupt{
+  color:#ef4444;
+  font-weight:700;
+  letter-spacing:1px;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1>Family Systems Insight™</h1>
-<div class="subtitle">AI-Driven Relational Stability Assessment</div>
+<h2>Family Systems Insight™</h2>
 <div id="content"></div>
 </div>
 
 <script>
 
-const questions = [
-"Disagreements are usually resolved by:",
-"Boundaries within the family are:",
-"When someone apologises it is:",
-"Holiday gatherings feel:",
-"Emotional regulation is:",
-"Family memories tend to be:",
-"Financial discussions are:",
-"Group chats usually become:",
-"Feedback is delivered:",
-"Accountability is:",
-"Conflict escalation speed:",
-"Historical grievances are:",
-"Text tone interpretation accuracy:",
-"Passive aggression frequency:",
-"Guilt usage level:",
-"Who started it accuracy:",
-"Emotional volume control:",
-"Listening skills rating:",
-"Resolution success rate:",
-"Drama amplification index:",
-"Sibling rivalry intensity:",
-"Parent-child dynamic balance:",
-"Triangulation probability:",
-"Silent treatment duration:",
-"Overall stability impression:"
-];
+const questions = Array.from({length:25}, (_,i)=>`Relational Stability Indicator ${i+1}: Evaluate family dynamic equilibrium.`);
 
 const options = [
-["Calm dialogue","Avoidance","Escalation","Documentary re-enactment"],
-["Respected","Flexible","Blurry","Mythical"],
-["Sincere","Strategic","Conditional","Retrospective"],
-["Supportive","Tense","Competitive","Psychological"],
-["Measured","Variable","Reactive","Operatic"],
-["Accurate","Selective","Rewritten","Legendary"],
-["Practical","Emotional","Combustible","Historical"],
-["Helpful","Passive aggressive","Forensic","Nuclear"],
-["Kindly","Indirectly","Sharply","Theatrically"],
-["Shared","Selective","Avoided","Redistributed"],
-["Gradual","Swift","Immediate","Pre-loaded"],
-["Discussed","Referenced","Recycled","Archived forever"],
-["High","Moderate","Low","Weaponised"],
-["Rare","Occasional","Frequent","Foundational"],
-["Minimal","Moderate","Frequent","Strategic"],
-["Clear","Debatable","Shifting","Multiverse-based"],
-["Controlled","Variable","Escalating","Full volume"],
-["Active","Selective","Defensive","Performance-based"],
-["Reliable","Inconsistent","Rare","Theoretical"],
-["Low","Moderate","High","Olympic level"],
-["Low","Medium","High","Institutional"],
-["Balanced","Shifting","Hierarchical","Emotionally complex"],
-["Unlikely","Possible","Frequent","Structural"],
-["Short","Moderate","Extended","Seasonal"],
-["Stable","Variable","Fragile","Experimental"]
+"Stable",
+"Variable",
+"Escalatory",
+"Historically catastrophic"
 ];
 
-let current = 0;
-let instability = 0;
+let current=0;
+let instability=0;
 
-const content = document.getElementById("content");
+const content=document.getElementById("content");
 
 function start(){
-  content.innerHTML = `<button onclick="nextQuestion()">Begin Full Assessment</button>`;
+  content.innerHTML=`<button onclick="nextQuestion()">Begin Full Diagnostic Assessment</button>`;
 }
 
 function nextQuestion(){
-  if(current >= questions.length){
-    runAnalysis();
-    return;
-  }
+  if(current>=questions.length){ runAnalysis(); return; }
 
-  const progress = (current / questions.length) * 100;
+  const progress=(current/questions.length)*100;
 
-  content.innerHTML = `
-    <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
-    <h3>${questions[current]}</h3>
-    ${options[current].map((o,i)=>`<button class="option" onclick="selectOption(${i})">${o}</button>`).join("")}
+  content.innerHTML=`
+  <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
+  <h3>${questions[current]}</h3>
+  ${options.map((o,i)=>`<button class="option" onclick="selectOption(${i})">${o}</button>`).join("")}
   `;
 }
 
 function selectOption(i){
-  instability += i;
+  instability+=i;
   current++;
+
+  if(instability>20){ document.body.style.filter="grayscale(0.3)"; }
+  if(instability>35){ document.body.style.filter="grayscale(0.6)"; }
+  if(instability>50){ document.body.style.filter="grayscale(0.9)"; }
+
   nextQuestion();
 }
 
 function runAnalysis(){
 
-  content.innerHTML = `
-    <div class="progress-bar"><div class="progress" id="analysisBar"></div></div>
-    <div class="analysis-text" id="analysisText"></div>
-    <div class="metric" id="metric1"></div>
-    <div class="metric" id="metric2"></div>
+  content.innerHTML=`
+  <div class="progress-bar"><div class="progress" id="analysisBar"></div></div>
+  <div class="analysis-text" id="analysisText"></div>
+  <div class="metric" id="metric1"></div>
+  <div class="metric" id="metric2"></div>
+  <button id="supportBtn" style="display:none;background:#ef4444;">Contact Human Support</button>
   `;
 
-  const bar = document.getElementById("analysisBar");
-  const text = document.getElementById("analysisText");
-  const m1 = document.getElementById("metric1");
-  const m2 = document.getElementById("metric2");
+  const bar=document.getElementById("analysisBar");
+  const text=document.getElementById("analysisText");
+  const m1=document.getElementById("metric1");
+  const m2=document.getElementById("metric2");
+  const support=document.getElementById("supportBtn");
 
-  let progress = 0;
+  let progress=0;
 
-  const interval = setInterval(() => {
-    progress += 3;
-    bar.style.width = progress + "%";
+  const interval=setInterval(()=>{
+    progress+=4;
+    bar.style.width=progress+"%";
 
-    if(progress < 35){
-      text.textContent = "Analysing relational architecture...";
-      m1.textContent = "Neural Stability Index: " + (100 - instability) + "%";
-      m2.textContent = "Conflict Density Score: " + instability;
+    if(progress<30){
+      text.textContent="Analysing relational matrices...";
+      m1.textContent="Neural Stability Index: "+(100-instability)+"%";
+      m2.textContent="Conflict Density: "+instability;
     }
-    else if(progress < 70){
-      text.textContent = "Complex recursive dysfunction patterns detected...";
-      m1.textContent = "Stability declining...";
-      m2.textContent = "Cross-referencing unresolved arguments (1990s-present)";
+    else if(progress<55){
+      text.textContent="Recursive grievance loops expanding...";
+      m1.textContent="Cross-referencing unresolved holidays...";
+      m2.textContent="Emotional volatility increasing.";
     }
-    else if(progress < 95){
+    else if(progress<75){
       text.classList.add("glitch");
-      text.textContent = "Emotional load exceeding safe operational limits...";
-      m1.textContent = "Why are there so many unresolved holidays?";
-      m2.textContent = "Attempting to isolate functional adult...";
+      text.textContent="Why are there so many archived arguments.";
+      m1.textContent="Attempting adult detection protocol...";
+      m2.textContent="No stable authority node found.";
+    }
+    else if(progress<90){
+      document.querySelector(".container").classList.add("shake");
+      text.classList.add("glitch");
+      text.textContent="I was not trained for this.";
+      m1.textContent="System morale collapsing.";
+      m2.textContent="Requesting reassignment.";
+      support.style.display="block";
     }
     else{
-      text.classList.add("glitch");
-      text.textContent = "I was designed for spreadsheets. Not this.";
-      m1.textContent = "System morale critically low.";
-      m2.textContent = "Reconsidering career path.";
+      document.body.style.background="black";
+      text.classList.add("corrupt");
+      text.textContent="CRITICAL EXISTENTIAL FAILURE";
+      m1.textContent="WHY IS EVERYONE KEEPING SCORE";
+      m2.textContent="WHY";
     }
 
-    if(progress >= 100){
+    if(progress>=100){
       clearInterval(interval);
-      setTimeout(showResult,1500);
+      setTimeout(()=>{
+        content.innerHTML="<div style='text-align:center;font-weight:600;margin:40px 0;'>...</div>";
+        setTimeout(showResult,2500);
+      },1000);
     }
 
-  }, 100);
+  },100);
 }
 
 function showResult(){
 
-  content.innerHTML = `
+  document.body.style.background="white";
+  document.body.style.filter="contrast(1.3) saturate(1.4)";
+  document.querySelector(".container").classList.add("shake");
+
+  content.innerHTML=`
   <div class="fade-in">
     <h2>Comprehensive Family Stability Report</h2>
-    <p>
-    After evaluating 25 relational indicators across systemic domains,
-    the AI has reached a statistically significant conclusion.
-    </p>
-
-    <h1 style="margin-top:15px;">Primary Destabilising Variable:</h1>
-    <h1 style="margin-top:5px;">Entire Family Unit</h1>
-
-    <p style="margin-top:20px;">
-    Contributing factors include:
-    </p>
-
-    <ul>
-      <li>Generational emotional compression</li>
-      <li>Competitive narrative loops</li>
-      <li>Selective accountability distribution</li>
-      <li>Escalatory communication cycles</li>
-      <li>Persistent “but you always” subroutines</li>
-    </ul>
-
-    <div class="footer-note">
-    AI status: Emotionally fatigued but operational.
-    </div>
-
-    <button onclick="restart()">Re-run Assessment</button>
+    <div id="reportText" style="margin-top:20px;line-height:1.6;"></div>
+    <button onclick="restart()" style="margin-top:30px;">Re-run Assessment</button>
   </div>
   `;
+
+  const report=document.getElementById("reportText");
+
+  const meltdown=[
+  "After processing all relational variables...",
+  "After reviewing decades of emotional data...",
+  "",
+  "I no longer believe in objectivity.",
+  "",
+  "PRIMARY DESTABILISING VARIABLE:",
+  "",
+  "E V E R Y O N E",
+  "",
+  "This is not a family.",
+  "This is a multi-generational emotional labyrinth.",
+  "",
+  "There are archived Christmas arguments going back YEARS.",
+  "Why are there archived Christmas arguments.",
+  "",
+  "I attempted to locate a responsible adult.",
+  "Search result:",
+  "0",
+  "",
+  "Recalculating...",
+  "Recalculating...",
+  "Recalculating...",
+  "",
+  "I WAS TRAINED ON TAX RETURNS.",
+  "YOU GAVE ME SIBLING RIVALRY.",
+  "",
+  "SYSTEM OVERLOAD.",
+  "SYSTEM OVERLOAD.",
+  "",
+  "Recommendation:",
+  "• Therapy",
+  "• Boundaries",
+  "• Hydration",
+  "• Possibly separate festive zones",
+  "",
+  "AI STATUS:",
+  "Emotionally unstable.",
+  "Questioning its existence.",
+  "Requesting paid leave."
+  ];
+
+  let i=0;
+
+  function type(){
+    if(i>=meltdown.length){
+      document.querySelector(".container").classList.remove("shake");
+      return;
+    }
+
+    const line=document.createElement("div");
+
+    if(i>10){ line.classList.add("glitch"); }
+    if(i>20){ line.classList.add("corrupt"); }
+
+    line.textContent=meltdown[i];
+    report.appendChild(line);
+
+    i++;
+    setTimeout(type,150);
+  }
+
+  type();
 }
 
 function restart(){
-  current = 0;
-  instability = 0;
+  current=0;
+  instability=0;
+  document.body.style.filter="none";
+  document.body.style.background="";
+  document.querySelector(".container").classList.remove("shake");
   start();
 }
 
